@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y'all Street — Live Texas Market Intelligence</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #04060F;
+            --panel: #080D1A;
+            --border: #0F1E3A;
+            --accent: #00D4FF;
+            --green: #00FF88;
+            --red: #FF3B5C;
+            --gold: #FFB800;
+            --orange: #FF6B35;
+            --text: #B8CCEE;
+            --dim: #3A5A8A;
+            --bright: #EEF4FF;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── SETUP OVERLAY ── */
+        #setupOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 6, 15, 0.97);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .setup-box {
+            background: var(–panel);
+            border: 1px solid var(–border);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .setup-box::before {
+            content: ’’;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(–orange), var(–gold), var(–accent));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .setup-title {
+            font-family: ‘Bebas Neue’, sans-serif;
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: var(–bright);
+            margin-bottom: 6px;
+        }
+
+        .setup-sub {
+            font-size: 13px;
+            color: var(–dim);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .setup-step {
+            margin-bottom: 24px;
+        }
+
+        .step-label {
+            font-family: ‘Space Mono’, monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(–accent);
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: var(–dim);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .step-desc a {
+            color: var(–accent);
+            text-decoration: none;
+        }
+
+        .step-desc a:hover {
+            text-decoration: underline;
+        }
+
+        .api-input {
+            width: 100%;
+            background: var(–bg);
+            border: 1px solid var(–border);
+            border-radius: 8px;
+            padding: 11px 14px;
+            color: var(–bright);
+            font-size: 13px;
+            font-family: ‘Space Mono’, monospace;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .api-input:focus {
+            border-color: var(–accent);
+        }
+
+        .api-input::placeholder {
+            color: var(–dim);
+        }
+
+        .setup-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(–orange), var(–gold));
+            color: var(–bg);
+            font-size: 15px;
+            font-weight: 700;
+            font-family: ‘Syne’, sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .setup-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.01);
+        }
+
+        .setup-note {
+            font-size: 11px;
+            color: var(–dim);
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        .skip-btn {
+            background: none;
+            border: 1px solid var(–border);
+            color: var(–dim);
+            font-family: ‘Syne’, sans-serif;
+            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .skip-btn:hover {
+            border-color: var(–dim);
+            color: var(–text);
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 52px;
+            background: var(–panel);
+            border-bottom: 1px solid var(–border);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: ‘Bebas Neue’, sans-serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: var(–bright);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo .star {
+            color: var(–orange);
+        }
+
+        .logo span {
+            color: var(–accent);
+        }
+
+        .logo-sub {
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            color: var(–dim);
+            letter-spacing: 1px;
+        }
+
+        .ticker-wrap {
+            flex: 1;
+            overflow: hidden;
+            margin: 0 16px;
+            mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+        }
+
+        .ticker-inner {
+            display: flex;
+            gap: 24px;
+            animation: tickScroll 40s linear infinite;
+            width: max-content;
+        }
+
+        @keyframes tickScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .tick-item {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .ti-sym {
+            color: var(–dim);
+            font-weight: 700;
+        }
+
+        .ti-val {
+            color: var(–bright);
+            font-weight: 700;
+        }
+
+        .ti-chg.up {
+            color: var(–green);
+        }
+
+        .ti-chg.down {
+            color: var(–red);
+        }
+
+        .ti-exch {
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        .ti-exch.txse {
+            background: rgba(255, 107, 53, 0.15);
+            color: var(–orange);
+        }
+
+        .ti-exch.nysetx {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(–accent);
+        }
+
+        .ti-loading {
+            color: var(–dim);
+            font-size: 11px;
+            font-family: ‘Space Mono’, monospace;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.3
+            }
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .live-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            padding: 3px 9px;
+            font-size: 10px;
+            color: var(–green);
+            font-family: ‘Space Mono’, monospace;
+            white-space: nowrap;
+        }
+
+        .ldot {
+            width: 5px;
+            height: 5px;
+            background: var(–green);
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.2
+            }
+        }
+
+        .settings-btn {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid var(–border);
+            color: var(–dim);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-family: ‘Space Mono’, monospace;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-btn:hover {
+            color: var(–accent);
+            border-color: var(–accent);
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 185px;
+            border-right: 1px solid var(–border);
+            background: var(–panel);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sb-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(–dim);
+            padding: 14px 14px 6px;
+            font-family: ‘Space Mono’, monospace;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(–dim);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(–bright);
+            background: rgba(255, 107, 53, 0.04);
+            border-left-color: var(–orange);
+        }
+
+        .nav-item.active {
+            color: var(–orange);
+        }
+
+        .sb-div {
+            height: 1px;
+            background: var(–border);
+            margin: 8px 14px;
+        }
+
+        /* Watchlist stocks */
+        .watchlist {
+            padding: 0 10px;
+        }
+
+        .watch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 11px;
+            border-bottom: 1px solid rgba(15, 30, 58, 0.5);
+        }
+
+        .watch-item:hover {
+            background: rgba(0, 212, 255, 0.04);
+        }
+
+        .w-sym {
+            color: var(–text);
+            font-weight: 700;
+        }
+
+        .w-exch {
+            font-size: 8px;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-weight: 700;
+            margin-left: 3px;
+        }
+
+        .w-exch.txse {
+            color: var(–orange);
+        }
+
+        .w-exch.nysetx {
+            color: var(–accent);
+        }
+
+        .w-right {
+            text-align: right;
+        }
+
+        .w-price {
+            color: var(–bright);
+            font-size: 11px;
+        }
+
+        .w-chg {
+            font-size: 10px;
+        }
+
+        .w-chg.up {
+            color: var(–green)
+        }
+
+        .w-chg.down {
+            color: var(–red)
+        }
+
+        .w-loading {
+            color: var(–dim);
+            font-size: 10px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* ── CHAT AREA ── */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-bar {
+            display: flex;
+            border-bottom: 1px solid var(–border);
+            background: var(–panel);
+            padding: 0 14px;
+            flex-shrink: 0;
+        }
+
+        .tab {
+            padding: 11px 13px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(–dim);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(–text)
+        }
+
+        .tab.active {
+            color: var(–orange);
+            border-bottom-color: var(–orange);
+        }
+
+        /* News bar */
+        .news-bar {
+            padding: 8px 14px;
+            background: rgba(8, 13, 26, 0.8);
+            border-bottom: 1px solid var(–border);
+            flex-shrink: 0;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .news-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .news-pill {
+            flex-shrink: 0;
+            background: rgba(255, 107, 53, 0.06);
+            border: 1px solid rgba(255, 107, 53, 0.15);
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 11px;
+            color: var(–text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .news-pill:hover {
+            border-color: var(–orange);
+            color: var(–text);
+        }
+
+        .news-pill .ns {
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            color: var(–orange);
+            margin-right: 5px;
+            font-weight: 700;
+        }
+
+        .news-loading {
+            color: var(–dim);
+            font-size: 11px;
+            font-family: ‘Space Mono’, monospace;
+            padding: 5px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: var(–border);
+        }
+
+        .msg {
+            display: flex;
+            gap: 10px;
+            animation: msgIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .msg.user {
+            flex-direction: row-reverse;
+        }
+
+        .msg-av {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .msg.bot .msg-av {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.25), rgba(255, 184, 0, 0.1));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: var(–orange);
+        }
+
+        .msg.user .msg-av {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(–accent);
+        }
+
+        .bubble {
+            max-width: 80%;
+            padding: 11px 14px;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .msg.bot .bubble {
+            background: rgba(8, 13, 26, 0.95);
+            border: 1px solid var(–border);
+            color: var(–text);
+            border-radius: 4px 12px 12px 12px;
+            position: relative;
+        }
+
+        .msg.bot .bubble::before {
+            content: ’’;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(–orange), transparent);
+            border-radius: 4px 12px 0 0;
+        }
+
+        .msg.user .bubble {
+            background: rgba(0, 212, 255, 0.07);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            color: var(–bright);
+            border-radius: 12px 4px 12px 12px;
+        }
+
+        /* Inline data card */
+        .data-card {
+            margin-top: 10px;
+            background: rgba(255, 107, 53, 0.04);
+            border: 1px solid rgba(255, 107, 53, 0.15);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 11px;
+        }
+
+        .dc-title {
+            color: var(–orange);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+        }
+
+        .dc-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+            color: var(–dim);
+        }
+
+        .dc-row span:last-child {
+            color: var(–bright);
+        }
+
+        .dc-row .up {
+            color: var(–green)
+        }
+
+        .dc-row .down {
+            color: var(–red)
+        }
+
+        .signal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 1px 2px;
+        }
+
+        .signal-badge.buy {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(–green);
+        }
+
+        .signal-badge.sell {
+            background: rgba(255, 59, 92, 0.1);
+            border: 1px solid rgba(255, 59, 92, 0.3);
+            color: var(–red);
+        }
+
+        .signal-badge.hold {
+            background: rgba(255, 184, 0, 0.1);
+            border: 1px solid rgba(255, 184, 0, 0.3);
+            color: var(–gold);
+        }
+
+        .signal-badge.watch {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(–accent);
+        }
+
+        .etag {
+            display: inline-block;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0 2px;
+        }
+
+        .etag.txse {
+            background: rgba(255, 107, 53, 0.15);
+            color: var(–orange);
+        }
+
+        .etag.nysetx {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(–accent);
+        }
+
+        .quick-prompts {
+            padding: 8px 14px 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            border-top: 1px solid var(–border);
+            background: var(–panel);
+            flex-shrink: 0;
+        }
+
+        .qp {
+            background: rgba(255, 107, 53, 0.05);
+            border: 1px solid rgba(255, 107, 53, 0.12);
+            color: var(–dim);
+            border-radius: 6px;
+            padding: 5px 11px;
+            font-size: 11px;
+            font-family: ‘Syne’, sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .qp:hover {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(–orange);
+            color: var(–orange);
+        }
+
+        .input-area {
+            padding: 10px 14px;
+            background: var(–panel);
+            border-top: 1px solid var(–border);
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .input-area textarea {
+            flex: 1;
+            background: var(–bg);
+            border: 1px solid var(–border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: var(–bright);
+            font-size: 13px;
+            font-family: ‘Syne’, sans-serif;
+            resize: none;
+            outline: none;
+            max-height: 90px;
+            transition: border-color 0.2s;
+            line-height: 1.4;
+        }
+
+        .input-area textarea::placeholder {
+            color: var(–dim);
+        }
+
+        .input-area textarea:focus {
+            border-color: rgba(255, 107, 53, 0.4);
+        }
+
+        .send-btn {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(–orange), var(–gold));
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.08);
+            filter: brightness(1.1)
+        }
+
+        .send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .send-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: var(–bg);
+        }
+
+        .typing {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 11px 14px;
+            background: rgba(8, 13, 26, 0.95);
+            border: 1px solid var(–border);
+            border-radius: 4px 12px 12px 12px;
+            width: fit-content;
+        }
+
+        .typing span {
+            width: 5px;
+            height: 5px;
+            background: var(–orange);
+            border-radius: 50%;
+            animation: tb 1.2s infinite;
+            opacity: 0.6;
+        }
+
+        .typing span:nth-child(2) {
+            animation-delay: 0.2s
+        }
+
+        .typing span:nth-child(3) {
+            animation-delay: 0.4s
+        }
+
+        @keyframes tb {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.6
+            }
+
+            30% {
+                transform: translateY(-4px);
+                opacity: 1
+            }
+        }
+
+        /* Right panel */
+        .right-panel {
+            width: 200px;
+            border-left: 1px solid var(–border);
+            background: var(–panel);
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            gap: 12px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .right-panel::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .right-panel::-webkit-scrollbar-thumb {
+            background: var(–border);
+        }
+
+        .rp-title {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(–dim);
+            font-family: ‘Space Mono’, monospace;
+            margin-bottom: 8px;
+        }
+
+        .metric {
+            background: rgba(255, 107, 53, 0.03);
+            border: 1px solid var(–border);
+            border-radius: 8px;
+            padding: 9px 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .metric:hover {
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        .m-label {
+            font-size: 9px;
+            color: var(–dim);
+            font-family: ‘Space Mono’, monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .m-val {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(–bright);
+            font-family: ‘Space Mono’, monospace;
+            line-height: 1.2;
+        }
+
+        .m-sub {
+            font-size: 9px;
+            font-family: ‘Space Mono’, monospace;
+            margin-top: 1px;
+        }
+
+        .m-sub.up {
+            color: var(–green)
+        }
+
+        .m-sub.down {
+            color: var(–red)
+        }
+
+        .m-sub.neu {
+            color: var(–dim)
+        }
+
+        .alert-item {
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+            padding: 6px 0;
+            border-bottom: 1px solid var(–border);
+        }
+
+        .adot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .adot.h {
+            background: var(–red);
+            box-shadow: 0 0 5px var(–red)
+        }
+
+        .adot.m {
+            background: var(–gold)
+        }
+
+        .adot.l {
+            background: var(–accent)
+        }
+
+        .atext {
+            color: var(–dim);
+            line-height: 1.4;
+            font-size: 11px;
+        }
+
+        .atime {
+            font-family: ‘Space Mono’, monospace;
+            font-size: 9px;
+            color: var(–dim);
+            margin-top: 1px;
+        }
+
+        @media(max-width:900px) {
+
+            .sidebar,
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media(max-width:600px) {
+            .news-bar {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ══════════════ SETUP OVERLAY ══════════════ -->
+
+    <div id="setupOverlay">
+        <div class="setup-box">
+            <div class="setup-title">★ Y'ALL STREET SETUP</div>
+            <div class="setup-sub">Add your free API keys to unlock live market data. Takes 2 minutes. Both APIs are
+                completely free.</div>
+
+            ```
+            <div class="setup-step">
+                <div class="step-label">Step 1 — Finnhub (Live Prices + News)</div>
+                <div class="step-desc">
+                    Go to <a href="https://finnhub.io" target="_blank">finnhub.io</a> → Sign up free → Copy your API
+                    key.<br>
+                    Free tier: 60 calls/min — plenty for our platform.
+                </div>
+                <input class="api-input" id="finnhubKey" placeholder="Enter Finnhub API key (e.g. abc123xyz...)" />
+            </div>
+
+            <div class="setup-step">
+                <div class="step-label">Step 2 — Alpha Vantage (Technical Indicators)</div>
+                <div class="step-desc">
+                    Go to <a href="https://www.alphavantage.co/support/#api-key" target="_blank">alphavantage.co</a> →
+                    Get free key instantly.<br>
+                    Free tier: 25 calls/day — used sparingly for deep analysis.
+                </div>
+                <input class="api-input" id="avKey" placeholder="Enter Alpha Vantage API key (e.g. ABCDE12345...)" />
+            </div>
+
+            <div class="setup-step">
+                <div class="step-label">Step 3 — Anthropic Claude (AI Analyst)</div>
+                <div class="step-desc">
+                    Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → Create
+                    key.<br>
+                    Powers all AI analysis, signals, and intelligence.
+                </div>
+                <input class="api-input" id="claudeKey" placeholder="Enter Anthropic API key (sk-ant-...)" />
+            </div>
+
+            <button class="setup-btn" onclick="saveKeys()">🚀 Launch Y'all Street →</button>
+            <button class="skip-btn" onclick="skipSetup()">Skip for now — use demo mode</button>
+            <div class="setup-note">Keys are saved locally in your browser only. Never sent anywhere except the official
+                APIs.</div>
+            ```
+
+        </div>
+    </div>
+
+    <!-- ══════════════ TOPBAR ══════════════ -->
+
+    <div class="topbar">
+        <div>
+            <div class="logo"><span class="star">★</span> Y'ALL <span>STREET</span></div>
+            <div class="logo-sub">TXSE + NYSE TEXAS · LIVE</div>
+        </div>
+        <div class="ticker-wrap">
+            <div class="ticker-inner" id="tickerInner">
+                <span class="ti-loading">● Fetching live data...</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="live-pill" id="livePill">
+                <div class="ldot"></div><span id="liveLabel">CONNECTING</span>
+            </div>
+            <button class="settings-btn" onclick="document.getElementById('setupOverlay').style.display='flex'">⚙
+                Keys</button>
+        </div>
+    </div>
+
+    <!-- ══════════════ MAIN ══════════════ -->
+
+    <div class="main">
+
+        <!-- Sidebar -->
+
+        <div class="sidebar">
+            <div class="sb-label">Modules</div>
+            <div class="nav-item active">💬 AI Analyst</div>
+            <div class="nav-item">📡 Live Signals</div>
+            <div class="nav-item">🚀 IPO Pipeline</div>
+            <div class="nav-item">🛡️ Risk Engine</div>
+            <div class="nav-item">⚖️ Compliance</div>
+            <div class="sb-div"></div>
+            <div class="sb-label">Watchlist</div>
+            <div class="watchlist" id="watchlist">
+                <div class="watch-item" onclick="lookupStock('T')"><span><span class="w-sym">T</span><span
+                            class="w-exch nysetx">NYSE TX</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-T">···</div>
+                        <div class="w-chg" id="wc-T"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('TXN')"><span><span class="w-sym">TXN</span><span
+                            class="w-exch txse">TXSE</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-TXN">···</div>
+                        <div class="w-chg" id="wc-TXN"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('XOM')"><span><span class="w-sym">XOM</span><span
+                            class="w-exch txse">TXSE</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-XOM">···</div>
+                        <div class="w-chg" id="wc-XOM"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('NVDA')"><span><span class="w-sym">NVDA</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-NVDA">···</div>
+                        <div class="w-chg" id="wc-NVDA"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('TSLA')"><span><span class="w-sym">TSLA</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-TSLA">···</div>
+                        <div class="w-chg" id="wc-TSLA"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('AAPL')"><span><span class="w-sym">AAPL</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-AAPL">···</div>
+                        <div class="w-chg" id="wc-AAPL"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('MSFT')"><span><span class="w-sym">MSFT</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-MSFT">···</div>
+                        <div class="w-chg" id="wc-MSFT"></div>
+                    </div>
+                </div>
+                <div class="watch-item" onclick="lookupStock('BRK.B')"><span><span class="w-sym">BRK.B</span></span>
+                    <div class="w-right">
+                        <div class="w-price w-loading" id="wp-BRK.B">···</div>
+                        <div class="w-chg" id="wc-BRK.B"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat -->
+
+        <div class="chat-area">
+            <div class="tab-bar">
+                <div class="tab active">🤖 AI Analyst</div>
+                <div class="tab">📰 Market News</div>
+                <div class="tab">📊 TXSE Listings</div>
+                <div class="tab">🏛️ NYSE Texas</div>
+                <div class="tab">🚀 IPO Watch</div>
+            </div>
+            <div class="news-bar" id="newsBar">
+                <span class="news-loading">● Loading live market news...</span>
+            </div>
+            <div class="messages" id="messages"></div>
+            <div class="quick-prompts" id="qps"></div>
+            <div class="input-area">
+                <textarea id="inp"
+                    placeholder="Ask anything — type a ticker for live analysis, or ask about TXSE/NYSE Texas..."
+                    rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right panel -->
+
+        <div class="right-panel">
+            <div>
+                <div class="rp-title">Market Snapshot</div>
+                <div class="metric" onclick="lookupStock('SPY')">
+                    <div class="m-label">S&P 500</div>
+                    <div class="m-val" id="spyVal">···</div>
+                    <div class="m-sub" id="spySub">Loading...</div>
+                </div>
+                <div class="metric" onclick="sendMessage('What is the current Bitcoin price and analysis?')">
+                    <div class="m-label">Bitcoin</div>
+                    <div class="m-val" id="btcVal">···</div>
+                    <div class="m-sub" id="btcSub">Loading...</div>
+                </div>
+                <div class="metric" onclick="sendMessage('Analyze Gold prices and give me a signal')">
+                    <div class="m-label">Gold</div>
+                    <div class="m-val" id="goldVal">···</div>
+                    <div class="m-sub neu">Store of value</div>
+                </div>
+            </div>
+            <div>
+                <div class="rp-title">Texas Alerts</div>
+                <div class="alert-item">
+                    <div class="adot h"></div>
+                    <div>
+                        <div class="atext">TXSE IPO window opens late 2026</div>
+                        <div class="atime">KEY EVENT</div>
+                    </div>
+                </div>
+                <div class="alert-item">
+                    <div class="adot m"></div>
+                    <div>
+                        <div class="atext">NYSE Texas adding dual-listings</div>
+                        <div class="atime">ONGOING</div>
+                    </div>
+                </div>
+                <div class="alert-item">
+                    <div class="adot m"></div>
+                    <div>
+                        <div class="atext">$270M TXSE funding round closed</div>
+                        <div class="atime">CONFIRMED</div>
+                    </div>
+                </div>
+                <div class="alert-item">
+                    <div class="adot l"></div>
+                    <div>
+                        <div class="atext">Goldman joins TXSE as backer</div>
+                        <div class="atime">Q4 2025</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="rp-title">Data Sources</div>
+                <div
+                    style="font-family:'Space Mono',monospace;font-size:10px;display:flex;flex-direction:column;gap:5px;">
+                    <div style="display:flex;justify-content:space-between;"><span
+                            style="color:var(--dim)">Prices</span><span id="finnhubStatus" style="color:var(--dim)">○
+                            Not set</span></div>
+                    <div style="display:flex;justify-content:space-between;"><span
+                            style="color:var(--dim)">Indicators</span><span id="avStatus" style="color:var(--dim)">○ Not
+                            set</span></div>
+                    <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">AI
+                            Engine</span><span id="claudeStatus" style="color:var(--dim)">○ Not set</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════
+        // STATE
+        // ═══════════════════════════════════════════
+        let FINNHUB_KEY = localStorage.getItem('ys_finnhub') || '';
+        let AV_KEY = localStorage.getItem('ys_av') || '';
+        let CLAUDE_KEY = localStorage.getItem('ys_claude') || '';
+        let history = [];
+        let busy = false;
+        let liveData = {};
+
+        const TXSE_STOCKS = ['TXN', 'XOM', 'COP', 'PSX', 'VLO', 'HAL', 'SLB', 'OXY'];
+        const NYSETX_STOCKS = ['T', 'ALL', 'WHR', 'MMM'];
+        const WATCH_SYMS = ['T', 'TXN', 'XOM', 'NVDA', 'TSLA', 'AAPL', 'MSFT', 'BRK.B'];
+        const TICKER_SYMS = ['T', 'TXN', 'XOM', 'NVDA', 'TSLA', 'AAPL', 'MSFT', 'AMZN', 'META', 'GOOGL', 'BRK.B', 'JPM', 'COP', 'HAL'];
+
+        // ═══════════════════════════════════════════
+        // SETUP
+        // ═══════════════════════════════════════════
+        function saveKeys() {
+            const fk = document.getElementById('finnhubKey').value.trim();
+            const av = document.getElementById('avKey').value.trim();
+            const ck = document.getElementById('claudeKey').value.trim();
+            if (!fk && !av && !ck) { alert('Please enter at least one API key.'); return; }
+            if (fk) { localStorage.setItem('ys_finnhub', fk); FINNHUB_KEY = fk; }
+            if (av) { localStorage.setItem('ys_av', av); AV_KEY = av; }
+            if (ck) { localStorage.setItem('ys_claude', ck); CLAUDE_KEY = ck; }
+            document.getElementById('setupOverlay').style.display = 'none';
+            updateStatusIndicators();
+            initPlatform();
+        }
+
+        function skipSetup() {
+            document.getElementById('setupOverlay').style.display = 'none';
+            updateStatusIndicators();
+            initPlatform();
+        }
+
+        function updateStatusIndicators() {
+            document.getElementById('finnhubStatus').textContent = FINNHUB_KEY ? '● Live' : '○ Not set';
+            document.getElementById('finnhubStatus').style.color = FINNHUB_KEY ? 'var(--green)' : 'var(--dim)';
+            document.getElementById('avStatus').textContent = AV_KEY ? '● Active' : '○ Not set';
+            document.getElementById('avStatus').style.color = AV_KEY ? 'var(--green)' : 'var(--dim)';
+            document.getElementById('claudeStatus').textContent = CLAUDE_KEY ? '● Online' : '○ Not set';
+            document.getElementById('claudeStatus').style.color = CLAUDE_KEY ? 'var(--green)' : 'var(--dim)';
+        }
+
+        // ═══════════════════════════════════════════
+        // FINNHUB — LIVE PRICES
+        // ═══════════════════════════════════════════
+        async function getQuote(symbol) {
+            if (!FINNHUB_KEY) return null;
+            try {
+                const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_KEY}`);
+                const d = await r.json();
+                if (d.c && d.c > 0) return d;
+                return null;
+            } catch (e) { return null; }
+        }
+
+        async function getNews() {
+            if (!FINNHUB_KEY) return [];
+            try {
+                const r = await fetch(`https://finnhub.io/api/v1/news?category=general&token=${FINNHUB_KEY}`);
+                const d = await r.json();
+                return Array.isArray(d) ? d.slice(0, 8) : [];
+            } catch (e) { return []; }
+        }
+
+        async function getCompanyNews(symbol) {
+            if (!FINNHUB_KEY) return [];
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const week = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+                const r = await fetch(`https://finnhub.io/api/v1/company-news?symbol=${symbol}&from=${week}&to=${today}&token=${FINNHUB_KEY}`);
+                const d = await r.json();
+                return Array.isArray(d) ? d.slice(0, 5) : [];
+            } catch (e) { return []; }
+        }
+
+        async function getCryptoQuote(symbol) {
+            if (!FINNHUB_KEY) return null;
+            try {
+                const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=BINANCE:${symbol}USDT&token=${FINNHUB_KEY}`);
+                const d = await r.json();
+                return d.c && d.c > 0 ? d : null;
+            } catch (e) { return null; }
+        }
+
+        // ═══════════════════════════════════════════
+        // ALPHA VANTAGE — TECHNICAL INDICATORS
+        // ═══════════════════════════════════════════
+        async function getRSI(symbol) {
+            if (!AV_KEY) return null;
+            try {
+                const r = await fetch(`https://www.alphavantage.co/query?function=RSI&symbol=${symbol}&interval=daily&time_period=14&series_type=close&apikey=${AV_KEY}`);
+                const d = await r.json();
+                const vals = d['Technical Analysis: RSI'];
+                if (!vals) return null;
+                const latest = Object.values(vals)[0];
+                return parseFloat(latest.RSI).toFixed(1);
+            } catch (e) { return null; }
+        }
+
+        async function getSMA(symbol) {
+            if (!AV_KEY) return null;
+            try {
+                const r = await fetch(`https://www.alphavantage.co/query?function=SMA&symbol=${symbol}&interval=daily&time_period=50&series_type=close&apikey=${AV_KEY}`);
+                const d = await r.json();
+                const vals = d['Technical Analysis: SMA'];
+                if (!vals) return null;
+                const latest = Object.values(vals)[0];
+                return parseFloat(latest.SMA).toFixed(2);
+            } catch (e) { return null; }
+        }
+
+        // ═══════════════════════════════════════════
+        // LOAD WATCHLIST PRICES
+        // ═══════════════════════════════════════════
+        async function loadWatchlist() {
+            for (const sym of WATCH_SYMS) {
+                const q = await getQuote(sym);
+                if (q) {
+                    const priceEl = document.getElementById(`wp-${sym}`);
+                    const chgEl = document.getElementById(`wc-${sym}`);
+                    if (priceEl) {
+                        priceEl.textContent = `$${q.c.toFixed(2)}`;
+                        priceEl.classList.remove('w-loading');
+                    }
+                    if (chgEl) {
+                        const pct = ((q.c - q.pc) / q.pc * 100).toFixed(2);
+                        const dir = pct >= 0 ? 'up' : 'down';
+                        chgEl.textContent = `${pct >= 0 ? '+' : ''}${pct}%`;
+                        chgEl.className = `w-chg ${dir}`;
+                    }
+                    liveData[sym] = q;
+                } else if (!FINNHUB_KEY) {
+                    const el = document.getElementById(`wp-${sym}`);
+                    if (el) { el.textContent = 'No key'; el.classList.remove('w-loading'); }
+                }
+                await new Promise(r => setTimeout(r, 300));
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // LOAD TICKER
+        // ═══════════════════════════════════════════
+        async function loadTicker() {
+            if (!FINNHUB_KEY) {
+                document.getElementById('tickerInner').innerHTML = '<span style="color:var(--dim);font-family:Space Mono,monospace;font-size:11px;">Add Finnhub API key to see live prices ⚙</span>';
+                document.getElementById('liveLabel').textContent = 'DEMO MODE';
+                return;
+            }
+            const items = [];
+            for (const sym of TICKER_SYMS) {
+                const q = await getQuote(sym);
+                if (q) {
+                    const pct = ((q.c - q.pc) / q.pc * 100).toFixed(2);
+                    const dir = pct >= 0 ? 'up' : 'down';
+                    const isNYSETX = NYSETX_STOCKS.includes(sym);
+                    const isTXSE = TXSE_STOCKS.includes(sym);
+                    const exchTag = isNYSETX ? '<span class="ti-exch nysetx">NYSE TX</span>' : isTXSE ? '<span class="ti-exch txse">TXSE</span>' : '';
+                    items.push(`<div class="tick-item"><span class="ti-sym">${sym}</span><span class="ti-val">$${q.c.toFixed(2)}</span><span class="ti-chg ${dir}">${pct >= 0 ? '+' : ''}${pct}%</span>${exchTag}</div>`);
+                    liveData[sym] = q;
+                }
+                await new Promise(r => setTimeout(r, 200));
+            }
+            if (items.length > 0) {
+                const doubled = [...items, ...items];
+                document.getElementById('tickerInner').innerHTML = doubled.join('');
+                document.getElementById('liveLabel').textContent = 'LIVE DATA';
+                document.getElementById('livePill').style.borderColor = 'rgba(0,255,136,0.4)';
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // LOAD NEWS
+        // ═══════════════════════════════════════════
+        async function loadNews() {
+            const bar = document.getElementById('newsBar');
+            const news = await getNews();
+            if (news.length > 0) {
+                bar.innerHTML = news.map(n => `
+      <div class="news-pill" onclick="sendMessage('Tell me about this news: ${n.headline.replace(/'/g, '').substring(0, 80)}')">
+        <span class="ns">${n.source || 'NEWS'}</span>${n.headline.substring(0, 60)}${n.headline.length > 60 ? '...' : ''}
+      </div>
+    `).join('');
+            } else if (!FINNHUB_KEY) {
+                bar.innerHTML = '<span class="news-loading">Add Finnhub key to see live news</span>';
+            } else {
+                bar.innerHTML = '<span class="news-loading">No news loaded</span>';
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // SPY + BTC + GOLD
+        // ═══════════════════════════════════════════
+        async function loadMarketSnapshot() {
+            const spy = await getQuote('SPY');
+            if (spy) {
+                const pct = ((spy.c - spy.pc) / spy.pc * 100).toFixed(2);
+                document.getElementById('spyVal').textContent = `$${spy.c.toFixed(0)}`;
+                document.getElementById('spySub').textContent = `${pct >= 0 ? '+' : ''}${pct}% today`;
+                document.getElementById('spySub').className = `m-sub ${pct >= 0 ? 'up' : 'down'}`;
+            }
+            const btc = await getCryptoQuote('BTC');
+            if (btc) {
+                const pct = ((btc.c - btc.pc) / btc.pc * 100).toFixed(2);
+                document.getElementById('btcVal').textContent = `$${Math.round(btc.c).toLocaleString()}`;
+                document.getElementById('btcSub').textContent = `${pct >= 0 ? '+' : ''}${pct}% today`;
+                document.getElementById('btcSub').className = `m-sub ${pct >= 0 ? 'up' : 'down'}`;
+            }
+            const gold = await getQuote('GLD');
+            if (gold) {
+                const pct = ((gold.c - gold.pc) / gold.pc * 100).toFixed(2);
+                document.getElementById('goldVal').textContent = `$${gold.c.toFixed(0)}`;
+                document.getElementById('goldSub') && (document.getElementById('goldSub').textContent = `${pct >= 0 ? '+' : ''}${pct}%`);
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // STOCK LOOKUP — click watchlist
+        // ═══════════════════════════════════════════
+        async function lookupStock(sym) {
+            const q = liveData[sym] || await getQuote(sym);
+            if (q) {
+                const pct = ((q.c - q.pc) / q.pc * 100).toFixed(2);
+                const msg = `Give me a full analysis and trading signal for ${sym}. Here is the live data: Current price $${q.c.toFixed(2)}, Previous close $${q.pc.toFixed(2)}, Change ${pct >= 0 ? '+' : ''}${pct}%, Day High $${q.h?.toFixed(2) || 'N/A'}, Day Low $${q.l?.toFixed(2) || 'N/A'}, Open $${q.o?.toFixed(2) || 'N/A'}`;
+                sendMessage(msg, `Analyze ${sym} — $${q.c.toFixed(2)} (${pct >= 0 ? '+' : ''}${pct}%)`);
+            } else {
+                sendMessage(`Give me a full analysis and trading signal for ${sym}`);
+            }
+        }
+
+        // ═══════════════════════════════════════════
+        // AI ANALYST
+        // ═══════════════════════════════════════════
+        const SYSTEM = `You are LONE STAR, the elite AI analyst for Y'all Street — the premier intelligence platform for TXSE (Texas Stock Exchange) and NYSE Texas investors.
+
+LIVE DATA CONTEXT: When users provide live price data in their messages (current price, change %, high/low), use those EXACT numbers in your analysis. This is REAL-TIME data from Finnhub. Always reference the actual live numbers provided.
+
+YOUR EXPERTISE:
+- Deep specialist in TXSE and NYSE Texas ecosystem
+- Full US market analysis: equities, crypto, commodities, macro
+- Trading signals with specific price targets and confidence levels
+- Risk analysis: VaR, Sharpe, drawdown, correlation
+- IPO pipeline tracking for Texas exchanges
+
+KEY TEXAS EXCHANGE FACTS:
+- TXSE: SEC-approved Sept 30 2025, launching 2026, $270M raised from Goldman/BlackRock/JPMorgan/Citadel/Schwab, CEO James H. Lee, HQ Dallas Texas Market Center
+- NYSE Texas: NYSE's Dallas exchange at Old Parkland, dual-listing AT&T(T), Allstate(ALL), 3M(MMM), Whirlpool(WHR), Trump Media
+- TXSE targets 14,000+ PE-backed companies, IPO capabilities late 2026
+- Dallas = #2 US financial hub, 24 Fortune 500 TX companies
+
+SIGNAL FORMAT:
+- [SIGNAL: BUY/SELL/HOLD/WATCH] with confidence % (e.g., "BUY — 78% confidence")
+- [TXSE] or [NYSE-TX] tags for exchange-specific listings
+- Include specific price targets: "Target: $XXX | Stop-loss: $XXX"
+- Timeframe: "Short-term (1-4 weeks) / Medium-term (1-3 months)"
+
+MARKET CONTEXT (March 2026):
+SPX ~5,842 | BTC ~$87,400 | Gold ~$3,018 | VIX 18.4 | Fed rate 4.25%
+Two rate cuts since Sept 2025. AI infrastructure buildout ongoing. Texas energy sector strong.
+
+RESPONSE STYLE:
+- Lead with the signal and key number immediately
+- Be precise: use specific prices, percentages, dates
+- 3-5 sentences per section maximum
+- Always mention which exchange when discussing Texas-listed stocks
+- Include risk disclaimer naturally at the end`;
+
+        const prompts = [
+            ["📡 Live NVDA signal", "Analyze NVDA with today's live price and give me a full trading signal"],
+            ["🏛️ NYSE Texas listings", "What companies are on NYSE Texas and what's the investment opportunity?"],
+            ["🚀 TXSE IPO pipeline", "What's the TXSE IPO pipeline? Which companies should I watch for listings?"],
+            ["💰 Top 3 Texas signals", "Give me your top 3 BUY signals for Texas exchange listed stocks right now"],
+            ["🌍 Macro Q2 2026", "What's the macro outlook for Q2 2026 and how should I position my portfolio?"],
+            ["🪙 Bitcoin analysis", "Full Bitcoin technical and fundamental analysis — where is it headed?"],
+        ];
+
+        function setQps() {
+            const el = document.getElementById('qps'); el.innerHTML = '';
+            prompts.forEach(([l, m]) => { const b = document.createElement('button'); b.className = 'qp'; b.textContent = l; b.onclick = () => sendMessage(m); el.appendChild(b); });
+        }
+
+        function fmt(text) {
+            text = text.replace(/\[SIGNAL:\s*(BUY|SELL|HOLD|WATCH)\]/gi, (_, s) => { const cls = s.toLowerCase(); const icons = { buy: '▲', sell: '▼', hold: '◆', watch: '◉' }; return `<span class="signal-badge ${cls}">${icons[cls]} ${s}</span>`; });
+            text = text.replace(/\[TXSE\]/g, '<span class="etag txse">TXSE</span>');
+            text = text.replace(/\[NYSE-TX\]/g, '<span class="etag nysetx">NYSE TX</span>');
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--bright)">$1</strong>');
+            text = text.replace(/\n/g, '<br>');
+            return text;
+        }
+
+        function addMsg(role, html, isHtml = false) {
+            const msgs = document.getElementById('messages');
+            const w = document.createElement('div'); w.className = `msg ${role}`;
+            const av = document.createElement('div'); av.className = 'msg-av'; av.textContent = role === 'bot' ? '★ AI' : 'YOU';
+            const b = document.createElement('div'); b.className = 'bubble';
+            if (isHtml) b.innerHTML = html; else b.textContent = html;
+            w.appendChild(av); w.appendChild(b); msgs.appendChild(w); msgs.scrollTop = msgs.scrollHeight;
+            return b;
+        }
+
+        function showTyping() {
+            const msgs = document.getElementById('messages');
+            const w = document.createElement('div'); w.className = 'msg bot'; w.id = 'ti';
+            const av = document.createElement('div'); av.className = 'msg-av'; av.textContent = '★ AI';
+            const t = document.createElement('div'); t.className = 'typing'; t.innerHTML = '<span></span><span></span><span></span>';
+            w.appendChild(av); w.appendChild(t); msgs.appendChild(w); msgs.scrollTop = msgs.scrollHeight;
+        }
+        function removeTyping() { const el = document.getElementById('ti'); if (el) el.remove(); }
+
+        async function sendMessage(override, displayText) {
+            const inp = document.getElementById('inp'); const btn = document.getElementById('sendBtn');
+            const text = override || inp.value.trim();
+            const display = displayText || text;
+            if (!text || busy) return;
+            inp.value = ''; inp.style.height = 'auto'; document.getElementById('qps').innerHTML = '';
+            addMsg('user', display);
+            history.push({ role: 'user', content: text });
+            busy = true; btn.disabled = true; showTyping();
+
+            // Add live market context to the message
+            let contextNote = '';
+            if (FINNHUB_KEY && Object.keys(liveData).length > 0) {
+                const snapshot = Object.entries(liveData).slice(0, 5).map(([s, q]) => `${s}:$${q.c?.toFixed(2)}`).join(', ');
+                contextNote = `\n\n[LIVE MARKET DATA AVAILABLE: ${snapshot}]`;
+            }
+
+            try {
+                const useKey = CLAUDE_KEY || '';
+                const headers = { 'Content-Type': 'application/json' };
+                if (useKey && !useKey.includes('YOUR_KEY')) headers['x-api-key'] = useKey;
+
+                const endpoint = (useKey && !useKey.includes('YOUR_KEY'))
+                    ? 'https://api.anthropic.com/v1/messages'
+                    : '/api/chat';
+
+                const messagesWithContext = [...history];
+                if (contextNote && messagesWithContext.length > 0) {
+                    messagesWithContext[messagesWithContext.length - 1] = {
+                        role: 'user',
+                        content: text + contextNote
+                    };
+                }
+
+                // Add anthropic-version header only for direct API calls
+                if (useKey && !useKey.includes('YOUR_KEY')) {
+                    headers['anthropic-version'] = '2023-06-01';
+                    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+                }
+
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: SYSTEM, messages: messagesWithContext })
+                });
+                const data = await res.json();
+                if (data.error) {
+                    removeTyping();
+                    addMsg('bot', `⚠️ ${data.error.message || data.error} — Check your API keys in ⚙ Settings`, true);
+                } else {
+                    const reply = data.content?.[0]?.text || 'Analysis unavailable.';
+                    removeTyping();
+                    const msgs = document.getElementById('messages');
+                    const w = document.createElement('div'); w.className = 'msg bot';
+                    const av = document.createElement('div'); av.className = 'msg-av'; av.textContent = '★ AI';
+                    const b = document.createElement('div'); b.className = 'bubble'; b.innerHTML = fmt(reply);
+                    w.appendChild(av); w.appendChild(b); msgs.appendChild(w); msgs.scrollTop = msgs.scrollHeight;
+                    history.push({ role: 'assistant', content: reply });
+                    if (history.length <= 4) setQps();
+                }
+            } catch (e) {
+                removeTyping();
+                addMsg('bot', '⚠️ Connection error. If running locally, make sure server.js is running. Or add your Anthropic key in ⚙ Settings for direct browser access.', true);
+            }
+            busy = false; btn.disabled = false;
+        }
+
+        function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+        function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 90) + 'px'; }
+
+        // ═══════════════════════════════════════════
+        // BOOT
+        // ═══════════════════════════════════════════
+        async function initPlatform() {
+            updateStatusIndicators();
+
+            // Load data in parallel
+            loadTicker();
+            loadNews();
+            loadMarketSnapshot();
+            loadWatchlist();
+
+            // Boot message
+            await new Promise(r => setTimeout(r, 400));
+            showTyping();
+            await new Promise(r => setTimeout(r, 1200));
+            removeTyping();
+
+            const hasLive = !!FINNHUB_KEY;
+            const boot = `**★ LONE STAR Intelligence — ${hasLive ? 'LIVE DATA ONLINE' : 'DEMO MODE'}**\n\n${hasLive ? 'Live market data connected via Finnhub. Prices updating in real time across the platform.' : 'Add your Finnhub API key (⚙ Settings) for live prices — it\'s free at finnhub.io.'}\n\n[TXSE] and [NYSE-TX] are the biggest disruption to US markets in decades. I\'m tracking both exchanges, the full IPO pipeline, and all major US instruments.\n\n**Click any stock in the watchlist for instant live analysis, or ask me anything.**`;
+            const msgs = document.getElementById('messages');
+            const w = document.createElement('div'); w.className = 'msg bot';
+            const av = document.createElement('div'); av.className = 'msg-av'; av.textContent = '★ AI';
+            const b = document.createElement('div'); b.className = 'bubble'; b.innerHTML = fmt(boot);
+            w.appendChild(av); w.appendChild(b); msgs.appendChild(w);
+            history.push({ role: 'assistant', content: boot });
+            setQps();
+        }
+
+        // Check if keys already saved
+        if (FINNHUB_KEY || AV_KEY || CLAUDE_KEY) {
+            document.getElementById('setupOverlay').style.display = 'none';
+            initPlatform();
+        } else {
+            // Pre-fill any saved values
+            document.getElementById('finnhubKey').value = FINNHUB_KEY;
+            document.getElementById('avKey').value = AV_KEY;
+            document.getElementById('claudeKey').value = CLAUDE_KEY;
+        }
+    </script>
+
+</body>
+
+</html>
