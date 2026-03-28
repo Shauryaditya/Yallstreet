@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Y'all Street — The Intelligence Layer for Texas Markets</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+–bg:#04060F;
+–deep:#070B18;
+–panel:#0A1020;
+–border:#112040;
+–accent:#00D4FF;
+–gold:#FFB800;
+–green:#00FF88;
+–red:#FF3B5C;
+–text:#B8CCEE;
+–text-dim:#3A5A8A;
+–bright:#EEF4FF;
+–tx-star:#FF6B35;
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+font-family:‘Syne’,sans-serif;
+background:var(–bg);
+color:var(–text);
+overflow-x:hidden;
+}
+
+/* ── Grid bg ── */
+body::before{
+content:’’;position:fixed;inset:0;
+background-image:
+linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);
+background-size:60px 60px;
+pointer-events:none;z-index:0;
+}
+
+/* ── Nav ── */
+nav{
+position:fixed;top:0;left:0;right:0;z-index:100;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 40px;height:60px;
+background:rgba(4,6,15,0.85);
+backdrop-filter:blur(20px);
+border-bottom:1px solid rgba(0,212,255,0.1);
+}
+
+.nav-logo{
+display:flex;align-items:center;gap:10px;
+font-family:‘Bebas Neue’,sans-serif;
+font-size:26px;letter-spacing:2px;color:var(–bright);
+}
+
+.nav-logo .star{color:var(–tx-star);font-size:20px;}
+.nav-logo span{color:var(–accent);}
+
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-links a{
+font-size:13px;font-weight:600;color:var(–text-dim);
+text-decoration:none;transition:color 0.2s;letter-spacing:0.5px;
+}
+.nav-links a:hover{color:var(–accent);}
+
+.nav-cta{
+background:linear-gradient(135deg,var(–accent),var(–green));
+color:var(–bg);border:none;border-radius:8px;
+padding:9px 20px;font-size:13px;font-weight:700;
+font-family:‘Syne’,sans-serif;cursor:pointer;
+transition:all 0.2s;letter-spacing:0.5px;
+}
+.nav-cta:hover{transform:scale(1.04);filter:brightness(1.1);}
+
+/* ── Hero ── */
+.hero{
+min-height:100vh;display:flex;flex-direction:column;
+align-items:center;justify-content:center;
+padding:100px 20px 60px;
+position:relative;text-align:center;
+}
+
+.hero-glow{
+position:absolute;inset:0;pointer-events:none;
+background:
+radial-gradient(ellipse at 50% 40%,rgba(0,212,255,0.08) 0%,transparent 60%),
+radial-gradient(ellipse at 20% 80%,rgba(255,107,53,0.06) 0%,transparent 50%),
+radial-gradient(ellipse at 80% 10%,rgba(0,255,136,0.05) 0%,transparent 50%);
+}
+
+.live-badge{
+display:inline-flex;align-items:center;gap:8px;
+background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);
+border-radius:20px;padding:6px 16px;
+font-family:‘Space Mono’,monospace;font-size:11px;color:var(–green);
+letter-spacing:1.5px;margin-bottom:28px;
+animation:badgePulse 3s ease-in-out infinite;
+}
+
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0.2);}50%{box-shadow:0 0 0 8px rgba(0,255,136,0);}}
+
+.live-dot{width:7px;height:7px;background:var(–green);border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+.hero h1{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(60px,12vw,130px);
+line-height:0.92;letter-spacing:3px;
+color:var(–bright);margin-bottom:8px;
+}
+
+.hero h1 .accent{
+background:linear-gradient(90deg,var(–accent),var(–green));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero h1 .gold{
+background:linear-gradient(90deg,var(–gold),var(–tx-star));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.hero-sub{
+font-size:clamp(16px,2.5vw,22px);color:var(–text);
+max-width:680px;line-height:1.6;margin:24px auto 48px;font-weight:400;
+}
+
+.hero-sub strong{color:var(–accent);}
+
+/* Waitlist form */
+.waitlist-form{
+display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+max-width:520px;width:100%;margin:0 auto 40px;
+}
+
+.waitlist-form input{
+flex:1;min-width:220px;background:rgba(10,16,32,0.9);
+border:1px solid var(–border);border-radius:10px;
+padding:14px 18px;font-size:14px;font-family:‘Syne’,sans-serif;
+color:var(–bright);outline:none;
+transition:border-color 0.2s;
+}
+.waitlist-form input::placeholder{color:var(–text-dim);}
+.waitlist-form input:focus{border-color:var(–accent);}
+
+.waitlist-btn{
+background:linear-gradient(135deg,var(–accent),var(–green));
+color:var(–bg);border:none;border-radius:10px;
+padding:14px 28px;font-size:14px;font-weight:700;
+font-family:‘Syne’,sans-serif;cursor:pointer;
+transition:all 0.2s;white-space:nowrap;letter-spacing:0.5px;
+}
+.waitlist-btn:hover{transform:scale(1.04);filter:brightness(1.1);}
+
+.hero-social-proof{
+display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;
+font-size:12px;color:var(–text-dim);font-family:‘Space Mono’,monospace;
+}
+
+.proof-divider{color:var(–border);}
+.proof-highlight{color:var(–gold);font-weight:700;}
+
+/* ── Ticker ── */
+.ticker-bar{
+background:var(–panel);border-top:1px solid var(–border);border-bottom:1px solid var(–border);
+padding:12px 0;overflow:hidden;position:relative;
+}
+
+.ticker-track{
+display:flex;gap:48px;
+animation:tickerScroll 30s linear infinite;
+white-space:nowrap;width:max-content;
+}
+
+@keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.ticker-item{
+display:flex;gap:10px;align-items:center;
+font-family:‘Space Mono’,monospace;font-size:12px;
+}
+.t-name{color:var(–text-dim);font-weight:700;}
+.t-val{color:var(–bright);font-weight:700;}
+.t-chg.up{color:var(–green);}
+.t-chg.down{color:var(–red);}
+.t-exch{
+font-size:9px;padding:2px 6px;border-radius:4px;
+font-weight:700;letter-spacing:1px;
+}
+.t-exch.txse{background:rgba(255,107,53,0.15);color:var(–tx-star);border:1px solid rgba(255,107,53,0.3);}
+.t-exch.nysetx{background:rgba(0,212,255,0.1);color:var(–accent);border:1px solid rgba(0,212,255,0.2);}
+.t-exch.both{background:rgba(255,184,0,0.1);color:var(–gold);border:1px solid rgba(255,184,0,0.2);}
+
+/* ── Why section ── */
+.section{padding:100px 40px;max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+
+.section-eyebrow{
+font-family:‘Space Mono’,monospace;font-size:11px;
+letter-spacing:3px;text-transform:uppercase;color:var(–accent);
+margin-bottom:16px;
+}
+
+.section-title{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(40px,6vw,72px);letter-spacing:2px;
+color:var(–bright);line-height:1;margin-bottom:20px;
+}
+
+.section-desc{
+font-size:17px;color:var(–text);line-height:1.7;
+max-width:640px;margin-bottom:60px;
+}
+
+/* Stats row */
+.stats-row{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:1px;background:var(–border);border-radius:16px;overflow:hidden;
+margin-bottom:80px;
+}
+
+.stat-box{
+background:var(–panel);padding:32px 28px;
+transition:background 0.2s;
+}
+.stat-box:hover{background:rgba(0,212,255,0.04);}
+
+.stat-num{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(36px,5vw,56px);letter-spacing:1px;
+margin-bottom:6px;
+}
+
+.stat-num.blue{color:var(–accent);}
+.stat-num.gold{color:var(–gold);}
+.stat-num.green{color:var(–green);}
+.stat-num.orange{color:var(–tx-star);}
+
+.stat-label{font-size:13px;color:var(–text-dim);line-height:1.4;font-weight:600;}
+
+/* Feature grid */
+.features{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.feature-card{
+background:var(–panel);border:1px solid var(–border);
+border-radius:16px;padding:28px;
+transition:all 0.3s;position:relative;overflow:hidden;
+}
+
+.feature-card::before{
+content:’’;position:absolute;top:0;left:0;right:0;height:2px;
+opacity:0;transition:opacity 0.3s;
+}
+
+.feature-card.blue::before{background:linear-gradient(90deg,var(–accent),transparent);}
+.feature-card.gold::before{background:linear-gradient(90deg,var(–gold),transparent);}
+.feature-card.green::before{background:linear-gradient(90deg,var(–green),transparent);}
+.feature-card.orange::before{background:linear-gradient(90deg,var(–tx-star),transparent);}
+
+.feature-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.2);}
+.feature-card:hover::before{opacity:1;}
+
+.feat-icon{font-size:32px;margin-bottom:14px;}
+.feat-title{font-size:18px;font-weight:700;color:var(–bright);margin-bottom:8px;}
+.feat-desc{font-size:13px;color:var(–text-dim);line-height:1.6;}
+
+/* Exchange cards */
+.exchange-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:80px;}
+
+@media(max-width:640px){.exchange-row{grid-template-columns:1fr;}}
+
+.exchange-card{
+border-radius:16px;padding:32px;position:relative;overflow:hidden;
+}
+
+.exchange-card.txse{
+background:linear-gradient(135deg,rgba(255,107,53,0.08),rgba(255,184,0,0.04));
+border:1px solid rgba(255,107,53,0.25);
+}
+
+.exchange-card.nysetx{
+background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(0,255,136,0.04));
+border:1px solid rgba(0,212,255,0.25);
+}
+
+.exc-badge{
+display:inline-block;padding:4px 10px;border-radius:6px;
+font-family:‘Space Mono’,monospace;font-size:10px;font-weight:700;
+letter-spacing:1.5px;margin-bottom:16px;
+}
+
+.txse .exc-badge{background:rgba(255,107,53,0.2);color:var(–tx-star);}
+.nysetx .exc-badge{background:rgba(0,212,255,0.15);color:var(–accent);}
+
+.exc-name{font-size:22px;font-weight:800;color:var(–bright);margin-bottom:10px;}
+.exc-desc{font-size:13px;color:var(–text-dim);line-height:1.6;margin-bottom:16px;}
+
+.exc-facts{display:flex;flex-direction:column;gap:6px;}
+.exc-fact{
+display:flex;align-items:center;gap:8px;
+font-size:12px;color:var(–text);font-family:‘Space Mono’,monospace;
+}
+.exc-fact::before{content:‘▸’;font-size:10px;}
+.txse .exc-fact::before{color:var(–tx-star);}
+.nysetx .exc-fact::before{color:var(–accent);}
+
+/* Pricing */
+.pricing-row{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+.price-card{
+background:var(–panel);border:1px solid var(–border);
+border-radius:16px;padding:32px;
+transition:all 0.3s;
+}
+
+.price-card.featured{
+border-color:var(–accent);
+background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(0,255,136,0.03));
+position:relative;
+}
+
+.featured-badge{
+position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+background:linear-gradient(90deg,var(–accent),var(–green));
+color:var(–bg);font-size:10px;font-weight:700;
+padding:4px 14px;border-radius:0 0 8px 8px;
+font-family:‘Space Mono’,monospace;letter-spacing:1px;
+white-space:nowrap;
+}
+
+.price-tier{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(–text-dim);font-family:‘Space Mono’,monospace;margin-bottom:10px;}
+.price-amount{font-family:‘Bebas Neue’,sans-serif;font-size:52px;letter-spacing:1px;color:var(–bright);line-height:1;}
+.price-period{font-size:13px;color:var(–text-dim);margin-bottom:20px;}
+.price-desc{font-size:13px;color:var(–text-dim);line-height:1.6;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(–border);}
+.price-features{display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
+.pf{display:flex;gap:8px;font-size:13px;color:var(–text);}
+.pf::before{content:‘✓’;color:var(–green);font-weight:700;flex-shrink:0;}
+.price-btn{
+width:100%;padding:12px;border-radius:10px;
+font-size:14px;font-weight:700;font-family:‘Syne’,sans-serif;
+cursor:pointer;transition:all 0.2s;border:none;letter-spacing:0.5px;
+}
+.price-card:not(.featured) .price-btn{background:var(–border);color:var(–text);}
+.price-card:not(.featured) .price-btn:hover{background:rgba(0,212,255,0.15);color:var(–accent);}
+.price-card.featured .price-btn{background:linear-gradient(135deg,var(–accent),var(–green));color:var(–bg);}
+.price-card.featured .price-btn:hover{filter:brightness(1.1);}
+
+/* CTA section */
+.cta-section{
+text-align:center;padding:100px 40px;
+background:linear-gradient(180deg,transparent,rgba(0,212,255,0.04),transparent);
+position:relative;z-index:1;
+}
+
+.cta-section h2{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(40px,8vw,90px);letter-spacing:3px;
+color:var(–bright);line-height:1;margin-bottom:20px;
+}
+
+.cta-section p{font-size:17px;color:var(–text-dim);max-width:500px;margin:0 auto 40px;line-height:1.6;}
+
+/* Footer */
+footer{
+border-top:1px solid var(–border);padding:32px 40px;
+display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+font-family:‘Space Mono’,monospace;font-size:11px;color:var(–text-dim);
+position:relative;z-index:1;
+}
+
+.footer-logo{
+font-family:‘Bebas Neue’,sans-serif;font-size:20px;
+letter-spacing:2px;color:var(–bright);
+}
+
+/* Success state */
+.success-msg{
+display:none;text-align:center;padding:16px 24px;
+background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);
+border-radius:10px;color:var(–green);font-size:14px;font-weight:600;
+max-width:520px;margin:0 auto;
+}
+
+@media(max-width:768px){
+nav{padding:0 20px;}
+.section{padding:60px 20px;}
+.nav-links{display:none;}
+footer{flex-direction:column;text-align:center;}
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <span class="star">★</span> Y'ALL <span>STREET</span>
+  </div>
+  <div class="nav-links">
+    <a href="#why">Why Texas</a>
+    <a href="#platform">Platform</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="app.html" style="text-decoration:none;"><button class="nav-cta">Launch App →</button></a>
+</nav>
+
+<!-- Hero -->
+
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    TXSE + NYSE TEXAS LAUNCHING 2026
+  </div>
+
+  <h1>
+    THE INTELLIGENCE<br>
+    LAYER FOR<br>
+    <span class="gold">TEXAS</span> <span class="accent">MARKETS</span>
+  </h1>
+
+  <p class="hero-sub">
+    The first AI-powered platform built exclusively for <strong>TXSE</strong> and <strong>NYSE Texas</strong> — giving institutional and private investors real-time signals, analytics, and execution intelligence for the new Wall Street.
+  </p>
+
+  <div class="waitlist-form">
+    <input type="email" id="email" placeholder="Enter your email address" />
+    <button class="waitlist-btn" onclick="joinWaitlist()">Join the Waitlist →</button>
+  </div>
+
+  <div class="success-msg" id="successMsg">
+    🤠 You're on the list! We'll be in touch before launch.
+  </div>
+
+  <div class="hero-social-proof">
+    <span><span class="proof-highlight">2 Exchanges</span> launching in Dallas 2026</span>
+    <span class="proof-divider">|</span>
+    <span><span class="proof-highlight">$270M+</span> backing TXSE</span>
+    <span class="proof-divider">|</span>
+    <span><span class="proof-highlight">Zero tools</span> built for them yet</span>
+  </div>
+</section>
+
+<!-- Live ticker -->
+
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- Why Texas -->
+
+<section class="section" id="why">
+  <div class="section-eyebrow">The Opportunity</div>
+  <div class="section-title">TWO NEW EXCHANGES.<br>ZERO DEDICATED TOOLS.</div>
+  <div class="section-desc">TXSE and NYSE Texas are the biggest disruption to US capital markets in decades. We're building the intelligence platform that every investor on these exchanges will need.</div>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num blue">$270M</div>
+      <div class="stat-label">Raised by TXSE — backed by Goldman, BlackRock, JPMorgan & Citadel</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num gold">1 in 10</div>
+      <div class="stat-label">US public companies call Texas home — natural listing pipeline</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num green">14,000+</div>
+      <div class="stat-label">Private equity-backed companies in the Southeast Quadrant targeted by TXSE</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num orange">2026</div>
+      <div class="stat-label">Launch year — first serious NYSE/Nasdaq challenger in decades</div>
+    </div>
+  </div>
+
+  <!-- Exchange cards -->
+
+  <div class="exchange-row">
+    <div class="exchange-card txse">
+      <div class="exc-badge">TXSE</div>
+      <div class="exc-name">Texas Stock Exchange</div>
+      <div class="exc-desc">SEC-approved national exchange launching 2026. Backed by the biggest names on Wall Street with a mission to break the NYSE/Nasdaq duopoly.</div>
+      <div class="exc-facts">
+        <div class="exc-fact">$270M raised — most well-capitalized exchange ever</div>
+        <div class="exc-fact">Goldman, BlackRock, JPMorgan, Citadel backing</div>
+        <div class="exc-fact">Focus on mid & large-cap companies</div>
+        <div class="exc-fact">IPO capabilities launching late 2026</div>
+        <div class="exc-fact">14,000+ PE-backed companies in target region</div>
+      </div>
+    </div>
+    <div class="exchange-card nysetx">
+      <div class="exc-badge">NYSE TEXAS</div>
+      <div class="exc-name">NYSE Texas</div>
+      <div class="exc-desc">NYSE's own Dallas-headquartered capital market. Already dual-listing major American companies, anchoring Wall Street's Texas presence.</div>
+      <div class="exc-facts">
+        <div class="exc-fact">NYSE brand — instant institutional credibility</div>
+        <div class="exc-fact">AT&T, Trump Media, Allstate, 3M listed</div>
+        <div class="exc-fact">Headquartered at Old Parkland, Dallas</div>
+        <div class="exc-fact">Dual-listing for NYSE-primary companies</div>
+        <div class="exc-fact">Expands Texas as #2 US financial hub</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Platform -->
+
+<section class="section" id="platform">
+  <div class="section-eyebrow">The Platform</div>
+  <div class="section-title">EVERYTHING YOU NEED<br>TO TRADE TEXAS</div>
+  <div class="section-desc">One platform. Both exchanges. Real-time AI intelligence for every type of investor.</div>
+
+  <div class="features">
+    <div class="feature-card blue">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-title">AI Market Analyst</div>
+      <div class="feat-desc">Ask any question about TXSE and NYSE Texas listings. Get instant trading signals, company analysis, and sector intelligence powered by Claude AI.</div>
+    </div>
+    <div class="feature-card gold">
+      <div class="feat-icon">📡</div>
+      <div class="feat-title">Real-Time Signals</div>
+      <div class="feat-desc">BUY / SELL / HOLD signals with confidence scores for every listing on both Texas exchanges. Updated continuously as market conditions change.</div>
+    </div>
+    <div class="feature-card green">
+      <div class="feat-icon">🛡️</div>
+      <div class="feat-title">Risk Engine</div>
+      <div class="feat-desc">Portfolio-level risk metrics: VaR, Sharpe ratio, drawdown analysis, and correlation mapping across both exchange listings.</div>
+    </div>
+    <div class="feature-card orange">
+      <div class="feat-icon">⚖️</div>
+      <div class="feat-title">Compliance Monitor</div>
+      <div class="feat-desc">AML/KYC pattern detection, regulatory flag monitoring, and compliance reporting built for institutional investors operating on new exchanges.</div>
+    </div>
+    <div class="feature-card blue">
+      <div class="feat-icon">📊</div>
+      <div class="feat-title">IPO Intelligence</div>
+      <div class="feat-desc">Track the 14,000+ PE-backed companies targeting TXSE listings. Get early signals on upcoming IPOs and dual-listings before they hit the market.</div>
+    </div>
+    <div class="feature-card gold">
+      <div class="feat-icon">🌐</div>
+      <div class="feat-title">Unified Dashboard</div>
+      <div class="feat-desc">Both exchanges in one view. Compare listings, track cross-exchange performance, and manage your full Texas market portfolio from a single interface.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+
+<section class="section" id="pricing">
+  <div class="section-eyebrow">Pricing</div>
+  <div class="section-title">EARLY ACCESS<br>RATES — LOCKED IN</div>
+  <div class="section-desc">Join the waitlist now and lock in founding member pricing before public launch.</div>
+
+  <div class="pricing-row">
+    <div class="price-card">
+      <div class="price-tier">Retail Investor</div>
+      <div class="price-amount">$49</div>
+      <div class="price-period">/month — billed monthly</div>
+      <div class="price-desc">Perfect for individual investors who want AI-powered intelligence on Texas exchange listings.</div>
+      <div class="price-features">
+        <div class="pf">AI analyst chat (50 queries/mo)</div>
+        <div class="pf">TXSE + NYSE Texas signals</div>
+        <div class="pf">Portfolio tracker (up to 20 positions)</div>
+        <div class="pf">Daily market briefing</div>
+        <div class="pf">Email alerts</div>
+      </div>
+      <button class="price-btn" onclick="document.getElementById('email').focus()">Join Waitlist</button>
+    </div>
+
+<div class="price-card featured">
+  <div class="featured-badge">MOST POPULAR</div>
+  <div class="price-tier">Professional</div>
+  <div class="price-amount">$299</div>
+  <div class="price-period">/month — billed monthly</div>
+  <div class="price-desc">For active traders and small funds who need institutional-grade intelligence on both exchanges.</div>
+  <div class="price-features">
+    <div class="pf">Unlimited AI analyst queries</div>
+    <div class="pf">Real-time signals + confidence scores</div>
+    <div class="pf">Full risk engine (VaR, Sharpe, drawdown)</div>
+    <div class="pf">IPO pipeline tracker</div>
+    <div class="pf">Compliance monitoring</div>
+    <div class="pf">API access</div>
+  </div>
+  <button class="price-btn" onclick="document.getElementById('email').focus()">Join Waitlist →</button>
+</div>
+
+<div class="price-card">
+  <div class="price-tier">Institutional</div>
+  <div class="price-amount">$2K+</div>
+  <div class="price-period">/month — custom contract</div>
+  <div class="price-desc">For hedge funds, RIAs, and trading desks that need white-glove intelligence and custom integrations.</div>
+  <div class="price-features">
+    <div class="pf">Everything in Professional</div>
+    <div class="pf">White-label options</div>
+    <div class="pf">Custom data integrations</div>
+    <div class="pf">Dedicated account manager</div>
+    <div class="pf">SLA + priority support</div>
+  </div>
+  <button class="price-btn" onclick="document.getElementById('email').focus()">Contact Us</button>
+</div>
+
+  </div>
+</section>
+
+<!-- Final CTA -->
+
+<section class="cta-section" id="contact">
+  <h2>THE FUTURE OF<br>US MARKETS IS<br>IN TEXAS.</h2>
+  <p>Be among the first to trade smarter on TXSE and NYSE Texas. Join the waitlist before we launch.</p>
+  <div class="waitlist-form" style="justify-content:center;">
+    <input type="email" id="email2" placeholder="Enter your email address" />
+    <button class="waitlist-btn" onclick="joinWaitlist2()">Secure Your Spot →</button>
+  </div>
+  <div class="success-msg" id="successMsg2"></div>
+</section>
+
+<footer>
+  <div class="footer-logo">★ Y'ALL STREET</div>
+  <div>The Intelligence Layer for Texas Markets</div>
+  <div>© 2026 Y'all Street · Dallas, TX · Not financial advice</div>
+</footer>
+
+<script>
+// Ticker data
+const tickers=[
+  {name:'AT&T',val:'18.42',chg:'+1.2%',dir:'up',exch:'nysetx'},
+  {name:'TSLA',val:'271.15',chg:'-0.8%',dir:'down',exch:'both'},
+  {name:'EXXON',val:'112.30',chg:'+0.5%',dir:'up',exch:'txse'},
+  {name:'AAPL',val:'218.40',chg:'+1.1%',dir:'up',exch:'both'},
+  {name:'TXN',val:'185.20',chg:'+2.3%',dir:'up',exch:'txse'},
+  {name:'ALLSTATE',val:'192.80',chg:'+0.3%',dir:'up',exch:'nysetx'},
+  {name:'NVDA',val:'892.30',chg:'+3.4%',dir:'up',exch:'both'},
+  {name:'3M',val:'127.60',chg:'-0.4%',dir:'down',exch:'nysetx'},
+  {name:'MSFT',val:'415.72',chg:'+0.5%',dir:'up',exch:'both'},
+  {name:'ENERGY-TX',val:'58.40',chg:'+1.8%',dir:'up',exch:'txse'},
+  {name:'WHIRLPOOL',val:'84.20',chg:'+0.9%',dir:'up',exch:'nysetx'},
+  {name:'BTC-ETF',val:'87,412',chg:'+2.1%',dir:'up',exch:'txse'},
+];
+
+function buildTicker(){
+  const track=document.getElementById('tickerTrack');
+  const all=[...tickers,...tickers];
+  track.innerHTML=all.map(t=>`
+    <div class="ticker-item">
+      <span class="t-name">${t.name}</span>
+      <span class="t-val">${t.val}</span>
+      <span class="t-chg ${t.dir}">${t.chg}</span>
+      <span class="t-exch ${t.exch}">${t.exch==='both'?'TXSE+NYSE':'t.exch'==='txse'?'TXSE':'NYSE TX'}</span>
+    </div>
+  `).join('');
+  // Fix label
+  track.querySelectorAll('.t-exch').forEach((el,i)=>{
+    const t=tickers[i%tickers.length];
+    el.textContent=t.exch==='both'?'TXSE+NYSE TX':t.exch==='txse'?'TXSE':'NYSE TX';
+  });
+}
+
+buildTicker();
+
+function joinWaitlist(){
+  const email=document.getElementById('email').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
+  document.getElementById('successMsg').style.display='block';
+  document.getElementById('email').value='';
+  // In production: POST to your backend to store email
+  console.log('Waitlist signup:',email);
+}
+
+function joinWaitlist2(){
+  const email=document.getElementById('email2').value.trim();
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
+  const msg=document.getElementById('successMsg2');
+  msg.style.display='block';
+  msg.textContent='🤠 You\'re on the list! We\'ll be in touch before launch.';
+  document.getElementById('email2').value='';
+}
+</script>
+
+</body>
+</html>
