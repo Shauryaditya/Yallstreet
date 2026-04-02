@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Y'all Street — The Intelligence Layer for Texas Markets</title>
+<title>Texas Street Inc — The Intelligence Layer for Texas Markets</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -382,6 +382,17 @@ font-family:‘Bebas Neue’,sans-serif;font-size:20px;
 letter-spacing:2px;color:var(–bright);
 }
 
+.footer-contact {
+display: flex;
+flex-direction: column;
+gap: 5px;
+text-align: right;
+}
+.footer-contact a {
+color: var(--accent);
+text-decoration: none;
+}
+
 /* Success state */
 .success-msg{
 display:none;text-align:center;padding:16px 24px;
@@ -395,6 +406,7 @@ nav{padding:0 20px;}
 .section{padding:60px 20px;}
 .nav-links{display:none;}
 footer{flex-direction:column;text-align:center;}
+.footer-contact {text-align:center;}
 }
 </style>
 
@@ -403,7 +415,7 @@ footer{flex-direction:column;text-align:center;}
 
 <nav>
   <div class="nav-logo">
-    <span class="star">★</span> Y'ALL <span>STREET</span>
+    <span class="star">★</span> TEXAS <span>STREET INC</span>
   </div>
   <div class="nav-links">
     <a href="#why">Why Texas</a>
@@ -626,9 +638,16 @@ footer{flex-direction:column;text-align:center;}
 </section>
 
 <footer>
-  <div class="footer-logo">★ Y'ALL STREET</div>
-  <div>The Intelligence Layer for Texas Markets</div>
-  <div>© 2026 Y'all Street · Dallas, TX · Not financial advice</div>
+  <div>
+      <div class="footer-logo">★ TEXAS STREET INC</div>
+      <div style="margin-top:8px;">The Intelligence Layer for Texas Markets</div>
+      <div style="margin-top:8px;">© 2026 Texas Street Inc · Dallas, TX · Not financial advice</div>
+  </div>
+  <div class="footer-contact">
+      <div>Get in touch</div>
+      <div>📞 <a href="tel:+16824613327">+1 (682) 461-3327</a></div>
+      <div>✉️ <a href="mailto:Oladapo@txsintel.com">Oladapo@txsintel.com</a></div>
+  </div>
 </footer>
 
 <script>
