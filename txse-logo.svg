@@ -1,0 +1,10 @@
+<svg width="300" height="60" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .logo-main { font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800; fill: #EEF4FF; letter-spacing: -2px;}
+    .logo-sub { font-family: 'Space Mono', sans-serif; font-size: 11px; font-weight: 700; fill: #EEF4FF; letter-spacing: 4.5px; }
+  </style>
+  <text x="0" y="48" class="logo-main">TXSE</text>
+  <text x="135" y="18" class="logo-sub">TEXAS</text>
+  <text x="135" y="33" class="logo-sub">STOCK</text>
+  <text x="135" y="48" class="logo-sub">EXCHANGE</text>
+</svg>

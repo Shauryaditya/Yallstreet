@@ -65,8 +65,8 @@
         }
 
         .setup-box {
-            background: var(–panel);
-            border: 1px solid var(–border);
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 40px;
             max-width: 500px;
@@ -81,7 +81,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(–orange), var(–gold), var(–accent));
+            background: linear-gradient(90deg, var(--orange), var(--gold), var(--accent));
             border-radius: 20px 20px 0 0;
         }
 
@@ -89,13 +89,13 @@
             font-family: ‘Bebas Neue’, sans-serif;
             font-size: 32px;
             letter-spacing: 2px;
-            color: var(–bright);
+            color: var(--bright);
             margin-bottom: 6px;
         }
 
         .setup-sub {
             font-size: 13px;
-            color: var(–dim);
+            color: var(--dim);
             margin-bottom: 28px;
             line-height: 1.5;
         }
@@ -109,19 +109,19 @@
             font-size: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(–accent);
+            color: var(--accent);
             margin-bottom: 8px;
         }
 
         .step-desc {
             font-size: 12px;
-            color: var(–dim);
+            color: var(--dim);
             margin-bottom: 10px;
             line-height: 1.5;
         }
 
         .step-desc a {
-            color: var(–accent);
+            color: var(--accent);
             text-decoration: none;
         }
 
@@ -131,11 +131,11 @@
 
         .api-input {
             width: 100%;
-            background: var(–bg);
-            border: 1px solid var(–border);
+            background: var(--bg);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 11px 14px;
-            color: var(–bright);
+            color: var(--bright);
             font-size: 13px;
             font-family: ‘Space Mono’, monospace;
             outline: none;
@@ -143,11 +143,11 @@
         }
 
         .api-input:focus {
-            border-color: var(–accent);
+            border-color: var(--accent);
         }
 
         .api-input::placeholder {
-            color: var(–dim);
+            color: var(--dim);
         }
 
         .setup-btn {
@@ -156,8 +156,8 @@
             border-radius: 10px;
             border: none;
             cursor: pointer;
-            background: linear-gradient(135deg, var(–orange), var(–gold));
-            color: var(–bg);
+            background: linear-gradient(135deg, var(--orange), var(--gold));
+            color: var(--bg);
             font-size: 15px;
             font-weight: 700;
             font-family: ‘Syne’, sans-serif;
@@ -173,7 +173,7 @@
 
         .setup-note {
             font-size: 11px;
-            color: var(–dim);
+            color: var(--dim);
             text-align: center;
             margin-top: 14px;
             line-height: 1.5;
@@ -181,8 +181,8 @@
 
         .skip-btn {
             background: none;
-            border: 1px solid var(–border);
-            color: var(–dim);
+            border: 1px solid var(--border);
+            color: var(--dim);
             font-family: ‘Syne’, sans-serif;
             font-size: 12px;
             padding: 8px 20px;
@@ -194,8 +194,8 @@
         }
 
         .skip-btn:hover {
-            border-color: var(–dim);
-            color: var(–text);
+            border-color: var(--dim);
+            color: var(--text);
         }
 
         /* ── TOPBAR ── */
@@ -205,8 +205,8 @@
             justify-content: space-between;
             padding: 0 16px;
             height: 52px;
-            background: var(–panel);
-            border-bottom: 1px solid var(–border);
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
             flex-shrink: 0;
             position: relative;
             z-index: 10;
@@ -216,24 +216,24 @@
             font-family: ‘Bebas Neue’, sans-serif;
             font-size: 20px;
             letter-spacing: 2px;
-            color: var(–bright);
+            color: var(--bright);
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
         .logo .star {
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .logo span {
-            color: var(–accent);
+            color: var(--accent);
         }
 
         .logo-sub {
             font-family: ‘Space Mono’, monospace;
             font-size: 9px;
-            color: var(–dim);
+            color: var(--dim);
             letter-spacing: 1px;
         }
 
@@ -271,21 +271,21 @@
         }
 
         .ti-sym {
-            color: var(–dim);
+            color: var(--dim);
             font-weight: 700;
         }
 
         .ti-val {
-            color: var(–bright);
+            color: var(--bright);
             font-weight: 700;
         }
 
         .ti-chg.up {
-            color: var(–green);
+            color: var(--green);
         }
 
         .ti-chg.down {
-            color: var(–red);
+            color: var(--red);
         }
 
         .ti-exch {
@@ -297,16 +297,21 @@
 
         .ti-exch.txse {
             background: rgba(255, 107, 53, 0.15);
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .ti-exch.nysetx {
             background: rgba(0, 212, 255, 0.1);
-            color: var(–accent);
+            color: var(--accent);
+        }
+
+        .ti-exch.nasdaqtx {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--green);
         }
 
         .ti-loading {
-            color: var(–dim);
+            color: var(--dim);
             font-size: 11px;
             font-family: ‘Space Mono’, monospace;
             animation: pulse 1.5s infinite;
@@ -340,7 +345,7 @@
             border-radius: 20px;
             padding: 3px 9px;
             font-size: 10px;
-            color: var(–green);
+            color: var(--green);
             font-family: ‘Space Mono’, monospace;
             white-space: nowrap;
         }
@@ -348,7 +353,7 @@
         .ldot {
             width: 5px;
             height: 5px;
-            background: var(–green);
+            background: var(--green);
             border-radius: 50%;
             animation: blink 1.5s infinite;
         }
@@ -367,8 +372,8 @@
 
         .settings-btn {
             background: rgba(0, 212, 255, 0.08);
-            border: 1px solid var(–border);
-            color: var(–dim);
+            border: 1px solid var(--border);
+            color: var(--dim);
             border-radius: 6px;
             padding: 4px 8px;
             font-size: 11px;
@@ -378,8 +383,8 @@
         }
 
         .settings-btn:hover {
-            color: var(–accent);
-            border-color: var(–accent);
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
         /* ── MAIN LAYOUT ── */
@@ -394,8 +399,8 @@
         /* Sidebar */
         .sidebar {
             width: 185px;
-            border-right: 1px solid var(–border);
-            background: var(–panel);
+            border-right: 1px solid var(--border);
+            background: var(--panel);
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
@@ -406,7 +411,7 @@
             font-size: 9px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(–dim);
+            color: var(--dim);
             padding: 14px 14px 6px;
             font-family: ‘Space Mono’, monospace;
         }
@@ -418,7 +423,7 @@
             padding: 8px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: var(–dim);
+            color: var(--dim);
             cursor: pointer;
             transition: all 0.2s;
             border-left: 2px solid transparent;
@@ -426,18 +431,18 @@
 
         .nav-item:hover,
         .nav-item.active {
-            color: var(–bright);
+            color: var(--bright);
             background: rgba(255, 107, 53, 0.04);
-            border-left-color: var(–orange);
+            border-left-color: var(--orange);
         }
 
         .nav-item.active {
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .sb-div {
             height: 1px;
-            background: var(–border);
+            background: var(--border);
             margin: 8px 14px;
         }
 
@@ -464,7 +469,7 @@
         }
 
         .w-sym {
-            color: var(–text);
+            color: var(--text);
             font-weight: 700;
         }
 
@@ -477,11 +482,15 @@
         }
 
         .w-exch.txse {
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .w-exch.nysetx {
-            color: var(–accent);
+            color: var(--accent);
+        }
+
+        .w-exch.nasdaqtx {
+            color: var(--green);
         }
 
         .w-right {
@@ -489,7 +498,7 @@
         }
 
         .w-price {
-            color: var(–bright);
+            color: var(--bright);
             font-size: 11px;
         }
 
@@ -498,15 +507,15 @@
         }
 
         .w-chg.up {
-            color: var(–green)
+            color: var(--green)
         }
 
         .w-chg.down {
-            color: var(–red)
+            color: var(--red)
         }
 
         .w-loading {
-            color: var(–dim);
+            color: var(--dim);
             font-size: 10px;
             animation: pulse 1.5s infinite;
         }
@@ -521,8 +530,8 @@
 
         .tab-bar {
             display: flex;
-            border-bottom: 1px solid var(–border);
-            background: var(–panel);
+            border-bottom: 1px solid var(--border);
+            background: var(--panel);
             padding: 0 14px;
             flex-shrink: 0;
         }
@@ -531,7 +540,7 @@
             padding: 11px 13px;
             font-size: 11px;
             font-weight: 600;
-            color: var(–dim);
+            color: var(--dim);
             cursor: pointer;
             border-bottom: 2px solid transparent;
             transition: all 0.2s;
@@ -539,19 +548,19 @@
         }
 
         .tab:hover {
-            color: var(–text)
+            color: var(--text)
         }
 
         .tab.active {
-            color: var(–orange);
-            border-bottom-color: var(–orange);
+            color: var(--orange);
+            border-bottom-color: var(--orange);
         }
 
         /* News bar */
         .news-bar {
             padding: 8px 14px;
             background: rgba(8, 13, 26, 0.8);
-            border-bottom: 1px solid var(–border);
+            border-bottom: 1px solid var(--border);
             flex-shrink: 0;
             display: flex;
             gap: 8px;
@@ -569,7 +578,7 @@
             border-radius: 6px;
             padding: 5px 10px;
             font-size: 11px;
-            color: var(–text-dim);
+            color: var(--text-dim);
             cursor: pointer;
             transition: all 0.2s;
             max-width: 220px;
@@ -579,20 +588,20 @@
         }
 
         .news-pill:hover {
-            border-color: var(–orange);
-            color: var(–text);
+            border-color: var(--orange);
+            color: var(--text);
         }
 
         .news-pill .ns {
             font-family: ‘Space Mono’, monospace;
             font-size: 9px;
-            color: var(–orange);
+            color: var(--orange);
             margin-right: 5px;
             font-weight: 700;
         }
 
         .news-loading {
-            color: var(–dim);
+            color: var(--dim);
             font-size: 11px;
             font-family: ‘Space Mono’, monospace;
             padding: 5px;
@@ -614,7 +623,7 @@
         }
 
         .messages::-webkit-scrollbar-thumb {
-            background: var(–border);
+            background: var(--border);
         }
 
         .msg {
@@ -655,13 +664,13 @@
         .msg.bot .msg-av {
             background: linear-gradient(135deg, rgba(255, 107, 53, 0.25), rgba(255, 184, 0, 0.1));
             border: 1px solid rgba(255, 107, 53, 0.3);
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .msg.user .msg-av {
             background: rgba(0, 212, 255, 0.1);
             border: 1px solid rgba(0, 212, 255, 0.2);
-            color: var(–accent);
+            color: var(--accent);
         }
 
         .bubble {
@@ -673,8 +682,8 @@
 
         .msg.bot .bubble {
             background: rgba(8, 13, 26, 0.95);
-            border: 1px solid var(–border);
-            color: var(–text);
+            border: 1px solid var(--border);
+            color: var(--text);
             border-radius: 4px 12px 12px 12px;
             position: relative;
         }
@@ -686,14 +695,14 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, var(–orange), transparent);
+            background: linear-gradient(90deg, var(--orange), transparent);
             border-radius: 4px 12px 0 0;
         }
 
         .msg.user .bubble {
             background: rgba(0, 212, 255, 0.07);
             border: 1px solid rgba(0, 212, 255, 0.15);
-            color: var(–bright);
+            color: var(--bright);
             border-radius: 12px 4px 12px 12px;
         }
 
@@ -709,7 +718,7 @@
         }
 
         .dc-title {
-            color: var(–orange);
+            color: var(--orange);
             font-size: 10px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -722,19 +731,19 @@
             display: flex;
             justify-content: space-between;
             padding: 3px 0;
-            color: var(–dim);
+            color: var(--dim);
         }
 
         .dc-row span:last-child {
-            color: var(–bright);
+            color: var(--bright);
         }
 
         .dc-row .up {
-            color: var(–green)
+            color: var(--green)
         }
 
         .dc-row .down {
-            color: var(–red)
+            color: var(--red)
         }
 
         .signal-badge {
@@ -754,25 +763,25 @@
         .signal-badge.buy {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid rgba(0, 255, 136, 0.3);
-            color: var(–green);
+            color: var(--green);
         }
 
         .signal-badge.sell {
             background: rgba(255, 59, 92, 0.1);
             border: 1px solid rgba(255, 59, 92, 0.3);
-            color: var(–red);
+            color: var(--red);
         }
 
         .signal-badge.hold {
             background: rgba(255, 184, 0, 0.1);
             border: 1px solid rgba(255, 184, 0, 0.3);
-            color: var(–gold);
+            color: var(--gold);
         }
 
         .signal-badge.watch {
             background: rgba(0, 212, 255, 0.1);
             border: 1px solid rgba(0, 212, 255, 0.3);
-            color: var(–accent);
+            color: var(--accent);
         }
 
         .etag {
@@ -788,12 +797,12 @@
 
         .etag.txse {
             background: rgba(255, 107, 53, 0.15);
-            color: var(–orange);
+            color: var(--orange);
         }
 
         .etag.nysetx {
             background: rgba(0, 212, 255, 0.1);
-            color: var(–accent);
+            color: var(--accent);
         }
 
         .quick-prompts {
@@ -801,15 +810,15 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            border-top: 1px solid var(–border);
-            background: var(–panel);
+            border-top: 1px solid var(--border);
+            background: var(--panel);
             flex-shrink: 0;
         }
 
         .qp {
             background: rgba(255, 107, 53, 0.05);
             border: 1px solid rgba(255, 107, 53, 0.12);
-            color: var(–dim);
+            color: var(--dim);
             border-radius: 6px;
             padding: 5px 11px;
             font-size: 11px;
@@ -822,14 +831,14 @@
 
         .qp:hover {
             background: rgba(255, 107, 53, 0.1);
-            border-color: var(–orange);
-            color: var(–orange);
+            border-color: var(--orange);
+            color: var(--orange);
         }
 
         .input-area {
             padding: 10px 14px;
-            background: var(–panel);
-            border-top: 1px solid var(–border);
+            background: var(--panel);
+            border-top: 1px solid var(--border);
             display: flex;
             gap: 8px;
             align-items: flex-end;
@@ -838,11 +847,11 @@
 
         .input-area textarea {
             flex: 1;
-            background: var(–bg);
-            border: 1px solid var(–border);
+            background: var(--bg);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 10px 12px;
-            color: var(–bright);
+            color: var(--bright);
             font-size: 13px;
             font-family: ‘Syne’, sans-serif;
             resize: none;
@@ -853,7 +862,7 @@
         }
 
         .input-area textarea::placeholder {
-            color: var(–dim);
+            color: var(--dim);
         }
 
         .input-area textarea:focus {
@@ -863,7 +872,7 @@
         .send-btn {
             width: 38px;
             height: 38px;
-            background: linear-gradient(135deg, var(–orange), var(–gold));
+            background: linear-gradient(135deg, var(--orange), var(--gold));
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -888,7 +897,7 @@
         .send-btn svg {
             width: 15px;
             height: 15px;
-            fill: var(–bg);
+            fill: var(--bg);
         }
 
         .typing {
@@ -897,7 +906,7 @@
             gap: 4px;
             padding: 11px 14px;
             background: rgba(8, 13, 26, 0.95);
-            border: 1px solid var(–border);
+            border: 1px solid var(--border);
             border-radius: 4px 12px 12px 12px;
             width: fit-content;
         }
@@ -905,7 +914,7 @@
         .typing span {
             width: 5px;
             height: 5px;
-            background: var(–orange);
+            background: var(--orange);
             border-radius: 50%;
             animation: tb 1.2s infinite;
             opacity: 0.6;
@@ -937,8 +946,8 @@
         /* Right panel */
         .right-panel {
             width: 200px;
-            border-left: 1px solid var(–border);
-            background: var(–panel);
+            border-left: 1px solid var(--border);
+            background: var(--panel);
             display: flex;
             flex-direction: column;
             padding: 12px;
@@ -952,21 +961,21 @@
         }
 
         .right-panel::-webkit-scrollbar-thumb {
-            background: var(–border);
+            background: var(--border);
         }
 
         .rp-title {
             font-size: 9px;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(–dim);
+            color: var(--dim);
             font-family: ‘Space Mono’, monospace;
             margin-bottom: 8px;
         }
 
         .metric {
             background: rgba(255, 107, 53, 0.03);
-            border: 1px solid var(–border);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 9px 10px;
             margin-bottom: 5px;
@@ -980,7 +989,7 @@
 
         .m-label {
             font-size: 9px;
-            color: var(–dim);
+            color: var(--dim);
             font-family: ‘Space Mono’, monospace;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -989,7 +998,7 @@
         .m-val {
             font-size: 15px;
             font-weight: 800;
-            color: var(–bright);
+            color: var(--bright);
             font-family: ‘Space Mono’, monospace;
             line-height: 1.2;
         }
@@ -1001,15 +1010,15 @@
         }
 
         .m-sub.up {
-            color: var(–green)
+            color: var(--green)
         }
 
         .m-sub.down {
-            color: var(–red)
+            color: var(--red)
         }
 
         .m-sub.neu {
-            color: var(–dim)
+            color: var(--dim)
         }
 
         .alert-item {
@@ -1017,7 +1026,7 @@
             gap: 6px;
             align-items: flex-start;
             padding: 6px 0;
-            border-bottom: 1px solid var(–border);
+            border-bottom: 1px solid var(--border);
         }
 
         .adot {
@@ -1029,20 +1038,20 @@
         }
 
         .adot.h {
-            background: var(–red);
-            box-shadow: 0 0 5px var(–red)
+            background: var(--red);
+            box-shadow: 0 0 5px var(--red)
         }
 
         .adot.m {
-            background: var(–gold)
+            background: var(--gold)
         }
 
         .adot.l {
-            background: var(–accent)
+            background: var(--accent)
         }
 
         .atext {
-            color: var(–dim);
+            color: var(--dim);
             line-height: 1.4;
             font-size: 11px;
         }
@@ -1050,7 +1059,7 @@
         .atime {
             font-family: ‘Space Mono’, monospace;
             font-size: 9px;
-            color: var(–dim);
+            color: var(--dim);
             margin-top: 1px;
         }
 
@@ -1079,7 +1088,7 @@
 
     <div class="topbar">
         <div>
-            <div class="logo"><img src="txse-logo.png" alt="TXSE Logo" style="height: 30px; width: auto;"></div>
+            <div class="logo"><img src="txse-logo.svg" alt="TXSE Logo" style="height: 30px; width: auto;"></div>
             <div class="logo-sub">TXSE + NYSE TEXAS · LIVE</div>
         </div>
         <div class="ticker-wrap">
@@ -1172,6 +1181,7 @@
                 <div class="tab">📰 Market News</div>
                 <div class="tab">📊 TXSE Listings</div>
                 <div class="tab">🏛️ NYSE Texas</div>
+                <div class="tab">📈 Nasdaq Texas</div>
                 <div class="tab">🚀 IPO Watch</div>
             </div>
             <div class="news-bar" id="newsBar">
@@ -1181,10 +1191,10 @@
             <div class="quick-prompts" id="qps"></div>
             <div class="input-area">
                 <textarea id="inp"
-                    placeholder="Ask anything — type a ticker for live analysis, or ask about TXSE/NYSE Texas..."
+                    placeholder="Ask anything — type a ticker for live analysis, or ask about TXSE/NYSE Texas/Nasdaq Texas..."
                     rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
                 <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-                    <svg viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                     </svg>
                 </button>
@@ -1273,6 +1283,7 @@
 
         const TXSE_STOCKS = ['TXN', 'XOM', 'COP', 'PSX', 'VLO', 'HAL', 'SLB', 'OXY'];
         const NYSETX_STOCKS = ['T', 'ALL', 'WHR', 'MMM'];
+        const NASDAQTX_STOCKS = ['AAPL', 'MSFT', 'AMZN', 'META', 'GOOGL'];
         const WATCH_SYMS = ['T', 'TXN', 'XOM', 'NVDA', 'TSLA', 'AAPL', 'MSFT', 'BRK.B'];
         const TICKER_SYMS = ['T', 'TXN', 'XOM', 'NVDA', 'TSLA', 'AAPL', 'MSFT', 'AMZN', 'META', 'GOOGL', 'BRK.B', 'JPM', 'COP', 'HAL'];
 
@@ -1396,7 +1407,8 @@
                     const dir = pct >= 0 ? 'up' : 'down';
                     const isNYSETX = NYSETX_STOCKS.includes(sym);
                     const isTXSE = TXSE_STOCKS.includes(sym);
-                    const exchTag = isNYSETX ? '<span class="ti-exch nysetx">NYSE TX</span>' : isTXSE ? '<span class="ti-exch txse">TXSE</span>' : '';
+                    const isNASDAQTX = NASDAQTX_STOCKS.includes(sym);
+                    const exchTag = isNYSETX ? '<span class="ti-exch nysetx">NYSE TX</span>' : isTXSE ? '<span class="ti-exch txse">TXSE</span>' : isNASDAQTX ? '<span class="ti-exch nasdaqtx">NASDAQ TX</span>' : '';
                     items.push(`<div class="tick-item"><span class="ti-sym">${sym}</span><span class="ti-val">$${q.c.toFixed(2)}</span><span class="ti-chg ${dir}">${pct >= 0 ? '+' : ''}${pct}%</span>${exchTag}</div>`);
                     liveData[sym] = q;
                 }
@@ -1477,7 +1489,7 @@
 LIVE DATA CONTEXT: When users provide live price data in their messages (current price, change %, high/low), use those EXACT numbers in your analysis. This is REAL-TIME data from Finnhub. Always reference the actual live numbers provided.
 
 YOUR EXPERTISE:
-- Deep specialist in TXSE and NYSE Texas ecosystem
+- Deep specialist in TXSE, NYSE Texas, and Nasdaq Texas ecosystem
 - Full US market analysis: equities, crypto, commodities, macro
 - Trading signals with specific price targets and confidence levels
 - Risk analysis: VaR, Sharpe, drawdown, correlation
@@ -1486,6 +1498,7 @@ YOUR EXPERTISE:
 KEY TEXAS EXCHANGE FACTS:
 - TXSE: SEC-approved Sept 30 2025, launching 2026, $270M raised from Goldman/BlackRock/JPMorgan/Citadel/Schwab, CEO James H. Lee, HQ Dallas Texas Market Center
 - NYSE Texas: NYSE's Dallas exchange at Old Parkland, dual-listing AT&T(T), Allstate(ALL), 3M(MMM), Whirlpool(WHR), Trump Media
+- Nasdaq Texas: Nasdaq's powerful new regional exchange, concentrating tech and energy capital
 - TXSE targets 14,000+ PE-backed companies, IPO capabilities late 2026
 - Dallas = #2 US financial hub, 24 Fortune 500 TX companies
 
@@ -1626,7 +1639,7 @@ RESPONSE STYLE:
             removeTyping();
 
             const hasLive = !!FINNHUB_KEY;
-            const boot = `**★ LONE STAR Intelligence — ${hasLive ? 'LIVE DATA ONLINE' : 'DEMO MODE'}**\n\n${hasLive ? 'Live market data connected via Finnhub. Prices updating in real time across the platform.' : 'Add your Finnhub API key (⚙ Settings) for live prices — it\'s free at finnhub.io.'}\n\n[TXSE] and [NYSE-TX] are the biggest disruption to US markets in decades. I\'m tracking both exchanges, the full IPO pipeline, and all major US instruments.\n\n**Click any stock in the watchlist for instant live analysis, or ask me anything.**`;
+            const boot = `**★ LONE STAR Intelligence — ${hasLive ? 'LIVE DATA ONLINE' : 'DEMO MODE'}**\n\n${hasLive ? 'Live market data connected via Finnhub. Prices updating in real time across the platform.' : 'Add your Finnhub API key (⚙ Settings) for live prices — it\'s free at finnhub.io.'}\n\n[TXSE], [NYSE-TX] and [NASDAQ-TX] are the biggest disruption to US markets in decades. I\'m tracking all three exchanges, the full IPO pipeline, and all major US instruments.\n\n**Click any stock in the watchlist for instant live analysis, or ask me anything.**`;
             const msgs = document.getElementById('messages');
             const w = document.createElement('div'); w.className = 'msg bot';
             const av = document.createElement('div'); av.className = 'msg-av'; av.textContent = '★ AI';
